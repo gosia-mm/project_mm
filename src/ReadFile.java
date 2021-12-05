@@ -45,13 +45,15 @@ public class ReadFile {
             myReader.close();
 
             ArrayList<GroupOfStudents> groups = new ArrayList<GroupOfStudents>();
-            for (int j=0; j<student.length; j++) {
+            for (int j=0; j<student.length-1; j++) {
                 if(!containsElement(groups, student[j].name)) {
                     groups.add(new GroupOfStudents(student[j].name, 1, student[j].Average));
                 }
                 else {
-                    int index = groups.indexOf(student[j].name);
-                    groups.get(index).addingNewStudent(1, student[j].Average);
+                    int index = returnIndex(groups, student[j].name);
+                    if (index != -1) {
+                        groups.get(index).addingNewStudent(1, student[j].Average);
+                    }
                 }
             }
 
@@ -70,7 +72,7 @@ public class ReadFile {
             }
 
             for (GroupOfStudents groupOfStudents : groups) {
-                System.out.println(groupOfStudents.Average);
+                System.out.println(groupOfStudents.groupName + " " + groupOfStudents.Average);
             }
 
             } catch (FileNotFoundException e) {
@@ -91,5 +93,18 @@ public class ReadFile {
             x++;
         }
         return response;
+    }
+
+    public static int returnIndex(ArrayList<GroupOfStudents> groupOfStuds, String name) {
+        int y = 0;
+        int indexReturned = -1;
+        while (y < groupOfStuds.size()-1) {
+            if (groupOfStuds.get(y).groupName.equals(name)) {
+                indexReturned = y;
+                break;
+            }
+            y++;
+        }
+        return indexReturned;
     }
 }
